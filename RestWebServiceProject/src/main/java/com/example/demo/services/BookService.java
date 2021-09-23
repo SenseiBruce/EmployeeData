@@ -3,12 +3,9 @@ package com.example.demo.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Book;
@@ -30,11 +27,12 @@ public class BookService  {
 		return bookRepository.findById( id);
 	}
 
-	public List<Book> addBook(String name, String auther) {
+	public String addBook(Book book) {
 		
-		return  (List<Book>) bookRepository.save(new Book(1,name,auther));
+		return bookRepository.save(book).toString();
+		
 	}
-
+	@Transactional
 	public String deleteBookByName(String name) {
 		
 		return bookRepository.deleteBookByName(name);
