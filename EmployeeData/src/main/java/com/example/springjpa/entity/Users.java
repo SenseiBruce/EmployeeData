@@ -1,0 +1,66 @@
+package com.example.springjpa.entity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "Users")
+public class Users {
+
+
+	   @Id
+	   @GeneratedValue(strategy = GenerationType.IDENTITY)
+	   @Column(name = "id")
+	   private Long id;
+
+	   @Column(name = "name")
+	   //@Size(max = 20, min = 3, message = "{user.name.invalid}")
+	   //@NotEmpty(message="Please Enter your name")
+	   private String name;
+
+	   @Column(name = "email", unique = true)
+	   //@Email(message = "{user.email.invalid}")
+	   //@NotEmpty(message="Please Enter your email")
+	   private String email;
+	   
+	   @OneToOne
+	   WayUp wayUp;
+		   
+
+	   public WayUp getWayUp() {
+		return wayUp;
+	}
+
+	public void setWayUp(WayUp wayUp) {
+		this.wayUp = wayUp;
+	}
+
+	public Long getId() {
+	      return id;
+	   }
+
+	   public void setId(Long id) {
+	      this.id = id;
+	   }
+
+	   public String getName() {
+	      return name;
+	   }
+
+	   public void setName(String name) {
+	      this.name = name;
+	   }
+
+	   public String getEmail() {
+	      return email;
+	   }
+
+	   public void setEmail(String email) {
+	      this.email = email;
+	   }
+}
