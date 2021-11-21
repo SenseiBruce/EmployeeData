@@ -1,5 +1,6 @@
 package com.example.springjpa.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,7 +17,7 @@ public class Projects {
 	
 	String projectName;
 	
-	@ManyToOne()	
+	@ManyToOne(cascade= CascadeType.ALL)	
 	Employee employee;
 
 	public Long getId() {
@@ -42,7 +43,7 @@ public class Projects {
 	public void setEmployee(Employee employee) {
 		this.employee = employee;
 	}
-	
-	
+
+
 	
 }

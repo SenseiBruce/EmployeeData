@@ -1,10 +1,12 @@
 package com.example.springjpa.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -18,9 +20,12 @@ public class Employee {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	
+	@Column
 	private String name;
-
+	
+	
+	@OneToOne( cascade= CascadeType.ALL,orphanRemoval= true)
+	private EmployeeAccount empoyeeAccount;
 
 	public Long getId() {
 		return id;

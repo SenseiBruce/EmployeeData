@@ -3,6 +3,9 @@ package com.example.springjpa.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,12 +21,15 @@ public class EmployeeRestController {
 	@Autowired
 	EmployeeService employeeService;
 	
+	@GetMapping("/hello")
+	public String hello() {
+		return "Hello World.";
+	}
 	
-	
-	  @RequestMapping("/getAllEmployees")
-	  public List<Employee> getAllEmpoyees() {
+	  @RequestMapping("/Employee")
+	  public Page<Employee> getAllEmpoyees(Pageable pageable) {
 	  
-	  return employeeService.getAll();
+	  return  employeeService.getAll(pageable);
 	  
 	  }
 
@@ -38,7 +44,7 @@ public class EmployeeRestController {
 	 * return employeeService.save(name); }
 	 */
 	
-	@RequestMapping("/getEmployeeByName/{name}")
+	@RequestMapping("/Employee/{name}")
 	public List<Employee> getEmplyeeById(@PathVariable String name ) throws EmployeeNotFoundException{
 		
 		if(employeeService.getByName(name)==null) {

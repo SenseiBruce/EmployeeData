@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
@@ -21,8 +22,14 @@ public class EmployeeDataApplication {
 	 * "Hi "+principal.getName()+" Welcome to javatechie"; }
 	 */
 
+	//private static  ApplicationContext  ctx;
 	public static void main(String[] args) {
 		SpringApplication.run(EmployeeDataApplication.class, args);
+		//SpringApplication.run(EmployeeDataApplication.class, args);
+		//JmsTemplate jms = SpringApplication.run(EmployeeDataApplication.class, args).getBean(JmsTemplate.class);
+		//jms.convertAndSend("javainuse", "test message");
 	}
 
+	
+	
 }

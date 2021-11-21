@@ -3,6 +3,8 @@ package com.example.springjpa.serviceimpl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.springjpa.entity.Employee;
@@ -22,10 +24,16 @@ public class EmployeeServiceImp implements EmployeeService {
 		return employeeRepository.findByName(name);
 	}
 
+	/*
+	 * @Override public List<Employee> getAll() {
+	 * 
+	 * return employeeRepository.findAll(); }
+	 */
+
 	@Override
-	public List<Employee> getAll() {
-		
-		return employeeRepository.findAll();
+	public Page<Employee> getAll(Pageable pageable) {
+		// TODO Auto-generated method stub
+		return employeeRepository.findAll(pageable);
 	}
 	
 	

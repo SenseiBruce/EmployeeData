@@ -21,6 +21,19 @@
 	</properties>
 	
 	<dependencies>
+	
+	<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-activemq</artifactId>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-jms -->
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-jms</artifactId>
+    <version>5.3.12</version>
+</dependency>
+		
 		<!-- <dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-oauth2</artifactId>
@@ -31,30 +44,68 @@
         <version>2.3.3.RELEASE</version>
     </dependency> -->
     
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
-		</dependency>
+		</dependency> -->
 		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-devtools -->
 <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-devtools</artifactId>
     </dependency>
-		<dependency>
+    
+	<!-- <dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
+		<dependency>
+		    <groupId>io.jsonwebtoken</groupId>
+		    <artifactId>jjwt</artifactId>
+		    <version>0.9.1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
+		<dependency>
+		    <groupId>javax.xml.bind</groupId>
+		    <artifactId>jaxb-api</artifactId>	
+		    <version>2.3.0</version>
+		</dependency>
+				
+
+		<dependency>
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>mssql-jdbc</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		
+		<!-- <dependency> 
+		<groupId>org.springframework.boot</groupId>  
+		<artifactId>spring-boot-starter-hateoas</artifactId>  
+		</dependency>   -->
+	
+		
+		<dependency>
+    	<groupId>org.springframework.boot</groupId>
+    	<artifactId>spring-boot-starter-actuator</artifactId>
+    	<version>2.5.1</version>
+		</dependency>
+
 	<!-- <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>

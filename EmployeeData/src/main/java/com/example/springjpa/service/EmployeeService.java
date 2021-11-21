@@ -2,6 +2,9 @@ package com.example.springjpa.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.example.springjpa.entity.Employee;
 
 public interface EmployeeService {
@@ -16,6 +19,6 @@ public interface EmployeeService {
 
 	List<Employee> getByName(String name);
 
-	List<Employee> getAll();
+	Page<Employee> getAll(Pageable pageable);
 
 }

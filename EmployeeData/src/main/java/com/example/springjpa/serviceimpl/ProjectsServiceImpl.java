@@ -1,6 +1,5 @@
 package com.example.springjpa.serviceimpl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.springjpa.entity.Employee;
 import com.example.springjpa.entity.Projects;
+import com.example.springjpa.exceptionhandlers.EmployeeNotFoundException;
 import com.example.springjpa.repository.EmployeeRepository;
 import com.example.springjpa.repository.ProjectsRepository;
 import com.example.springjpa.service.ProjectsService;
@@ -41,15 +41,13 @@ public class ProjectsServiceImpl implements ProjectsService {
 	}
 
 	@Override
-	public Projects addEmployeeToProject(String employeeName, String projectName) {
+	public Projects addEmployeeToProject(String employeeName, String projectName) throws EmployeeNotFoundException {
 		Projects project = new Projects();
 		project.setProjectName(projectName);
 		
 		List<Employee> emp =  employeeRepository.findByName(employeeName) ;
 		if(emp.isEmpty()) {
-			Employee emp1 = new Employee();
-			emp1.setName(employeeName);
-			project.setEmployee(emp1);
+			throw new EmployeeNotFoundException("This employee does not exist.");
 		
 		}
 		else {
