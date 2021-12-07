@@ -69,13 +69,14 @@ public class EmployeeRestController {
 	 //line 27 chaange from locally and central merged
 
 
-	/*
-	 * @RequestMapping("/saveEmployee/{name}/")
-	 * 
-	 * public Employee saveEmpoyee(@PathVariable String name) {
-	 * 
-	 * return employeeService.save(name); }
-	 */
+	
+	  @RequestMapping(value="/employee/save/{name}/", method = RequestMethod.POST)
+	  
+	  public Employee saveEmpoyee(@PathVariable String name) {
+	  
+	  return employeeService.save(name);
+	  }
+	 
 	
 	@RequestMapping(value="/employee/{name}",method = RequestMethod.GET)
 	public List<Employee> getEmplyeeByName(@PathVariable String name ) throws EmployeeNotFoundException{

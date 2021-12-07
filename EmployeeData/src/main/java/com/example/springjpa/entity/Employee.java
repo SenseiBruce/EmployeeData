@@ -11,9 +11,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="employee")
+@Table(name="employee",uniqueConstraints = { @UniqueConstraint(columnNames = { "name"}) })
 public class Employee  {
 	
 

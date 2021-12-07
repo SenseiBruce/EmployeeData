@@ -27,4 +27,6 @@ public interface EmployeeService {
 
 	List<Employee> getByProcedureAll();
 
+	Employee save(String name);
+
 }

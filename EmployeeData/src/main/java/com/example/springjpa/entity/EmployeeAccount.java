@@ -10,9 +10,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="employeeAccount")
+
+@Table(name="employeeAccount",uniqueConstraints = { @UniqueConstraint(columnNames = { "accountNumber"}) })
 public class EmployeeAccount {
 	
 	@Override

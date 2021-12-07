@@ -51,6 +51,12 @@ public class EmployeeServiceImp implements EmployeeService {
 		// TODO Auto-generated method stub
 		return employeeRepository.getAllEmployeesWithProcedure();
 	}
+
+	@Override
+	public Employee save(String name) {
+		// TODO Auto-generated method stub
+		return employeeRepository.save(new Employee(0, name, null));
+	}
 	
 	
 }
