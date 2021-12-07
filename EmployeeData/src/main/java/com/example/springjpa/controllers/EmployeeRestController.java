@@ -1,13 +1,12 @@
 package com.example.springjpa.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.springjpa.entity.Employee;
@@ -16,23 +15,57 @@ import com.example.springjpa.service.EmployeeService;
 
 //mer conflict demo
 @RestController
+@RequestMapping("/")
 public class EmployeeRestController {
 
 	@Autowired
 	EmployeeService employeeService;
 	
-	@GetMapping("/hello")
+	@RequestMapping(value="/hello", method = RequestMethod.GET)
 	public String hello() {
 		return "Hello World.";
 	}
 	
-	  @RequestMapping("/Employee")
-	  public Page<Employee> getAllEmpoyees(Pageable pageable) {
+	@RequestMapping(value="/employee/count",method = RequestMethod.GET)
+	public long getEmployeeCount() {
+		return employeeService.getAll().stream().count();
+	}
+	
+	  @RequestMapping(value="/employee",method = RequestMethod.GET)//,produces = {"application/xml","text/xml"}
+	  public Optional<List<Employee>> getAllEmpoyees() {
 	  
-	  return  employeeService.getAll(pageable);
+	  return  Optional.ofNullable(employeeService.getAll());
 	  
 	  }
+	  
+	  @RequestMapping(value="/employee/getAllByProcedure",method = RequestMethod.GET)//,produces = "application/xml
+	  public Optional<List<Employee>> getAllEmpoyeesByProcedure() {
+	  
+	  return  Optional.ofNullable(employeeService.getByProcedureAll());
+	  
+	  }
+	  
+	  @RequestMapping(value = "/employee/lastXEmplloyed/{top}",method = RequestMethod.GET)
+	  public Optional<List<Employee>> getTopXIdEmployee(@PathVariable int top){
+		// List<Employee> list = employeeService.getAll();	
+		 //list.stream().sorted().skip(top);
+		 return Optional.ofNullable(employeeService.getTopXEmpoyees(top));
+		/*
+		 * return Optional.ofNullable(list.stream()
+		 * .sorted(Comparator.comparingDouble(Employee::getId).reversed()).limit(top));
+		 */
+	  }
 
+	  @RequestMapping(value = "/employee/firstXEmployed/{last}",method = RequestMethod.GET)
+	  public Optional<List<Employee>> getLastXIdEmployee(@PathVariable int last){
+		// List<Employee> list = employeeService.getAll();	
+		 //list.stream().sorted().skip(top);
+		 return Optional.ofNullable(employeeService.getLastXEmpoyees(last));
+			/*
+			 * return Optional.ofNullable(list.stream()
+			 * .sorted(Comparator.comparingDouble(Employee::getId)).limit(last));
+			 */
+	  }
 	 //line 27 chaange from locally and central merged
 
 
@@ -44,13 +77,15 @@ public class EmployeeRestController {
 	 * return employeeService.save(name); }
 	 */
 	
-	@RequestMapping("/Employee/{name}")
-	public List<Employee> getEmplyeeById(@PathVariable String name ) throws EmployeeNotFoundException{
+	@RequestMapping(value="/employee/{name}",method = RequestMethod.GET)
+	public List<Employee> getEmplyeeByName(@PathVariable String name ) throws EmployeeNotFoundException{
 		
-		if(employeeService.getByName(name)==null) {
-			throw new EmployeeNotFoundException("Name "+name);
-		}
+		if(employeeService.getByName(name).isEmpty()||employeeService.getByName(name).size()==0) {
+			throw new EmployeeNotFoundException("Employee not found");
+			}
+		else {
 		return employeeService.getByName(name);
+		}
 	}
 	
 	

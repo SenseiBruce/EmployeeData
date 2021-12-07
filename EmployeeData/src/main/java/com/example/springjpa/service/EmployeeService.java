@@ -2,11 +2,11 @@ package com.example.springjpa.service;
 
 import java.util.List;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import com.example.springjpa.entity.Employee;
 
+@Service
 public interface EmployeeService {
 
 	/*
@@ -19,6 +19,12 @@ public interface EmployeeService {
 
 	List<Employee> getByName(String name);
 
-	Page<Employee> getAll(Pageable pageable);
+	List<Employee> getAll();
+	
+	List<Employee> getTopXEmpoyees(int x);
+
+	List<Employee> getLastXEmpoyees(int x);
+
+	List<Employee> getByProcedureAll();
 
 }

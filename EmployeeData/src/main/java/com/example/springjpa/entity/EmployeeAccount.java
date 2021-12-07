@@ -1,5 +1,7 @@
 package com.example.springjpa.entity;
 
+import java.util.Objects;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +15,24 @@ import javax.persistence.Table;
 @Table(name="employeeAccount")
 public class EmployeeAccount {
 	
+	@Override
+	public int hashCode() {
+		return Objects.hash(accountNumber, employee, id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		EmployeeAccount other = (EmployeeAccount) obj;
+		return Objects.equals(accountNumber, other.accountNumber) && Objects.equals(employee, other.employee)
+				&& Objects.equals(id, other.id);
+	}
+
 	/*
 	 * @OneToOne(cascade = CascadeType.ALL) private Employee employee;
 	 */

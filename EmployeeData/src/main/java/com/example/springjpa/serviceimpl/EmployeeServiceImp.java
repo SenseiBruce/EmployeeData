@@ -3,8 +3,6 @@ package com.example.springjpa.serviceimpl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.springjpa.entity.Employee;
@@ -31,9 +29,27 @@ public class EmployeeServiceImp implements EmployeeService {
 	 */
 
 	@Override
-	public Page<Employee> getAll(Pageable pageable) {
+	public List<Employee> getAll() {
 		// TODO Auto-generated method stub
-		return employeeRepository.findAll(pageable);
+		return employeeRepository.findAll();
+	}
+
+	@Override
+	public List<Employee> getTopXEmpoyees(int x) {
+		// TODO Auto-generated method stub
+		return employeeRepository.getTopXEmpoyees(x);
+	}
+	
+	@Override
+	public List<Employee> getLastXEmpoyees(int x) {
+		// TODO Auto-generated method stub
+		return employeeRepository.getLastXEmpoyees(x);
+	}
+
+	@Override
+	public List<Employee> getByProcedureAll() {
+		// TODO Auto-generated method stub
+		return employeeRepository.getAllEmployeesWithProcedure();
 	}
 	
 	
