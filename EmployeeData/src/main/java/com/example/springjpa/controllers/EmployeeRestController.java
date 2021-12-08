@@ -3,7 +3,9 @@ package com.example.springjpa.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.springjpa.entity.Employee;
 import com.example.springjpa.exceptionhandlers.EmployeeNotFoundException;
+import com.example.springjpa.exceptionhandlers.ResourceAlreadyExistsException;
 import com.example.springjpa.service.EmployeeService;
 
 //mer conflict demo
@@ -72,9 +75,18 @@ public class EmployeeRestController {
 	
 	  @RequestMapping(value="/employee/save/{name}/", method = RequestMethod.POST)
 	  
-	  public Employee saveEmpoyee(@PathVariable String name) {
+	  public Employee saveEmpoyee(@PathVariable String name) throws ResourceAlreadyExistsException {
+		  Employee emp;
+	  try {
+		  emp = employeeService.save(name);
+	  }
+	  catch(Exception e) {
+		  e.printStackTrace();
+		  throw new ResourceAlreadyExistsException("The resource you are trying to add already exists in the system.");
+	  }
+		  
 	  
-	  return employeeService.save(name);
+	return emp ;
 	  }
 	 
 	

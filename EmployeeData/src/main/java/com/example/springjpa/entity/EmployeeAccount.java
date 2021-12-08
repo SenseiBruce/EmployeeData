@@ -17,6 +17,16 @@ import javax.persistence.UniqueConstraint;
 @Table(name="employeeAccount",uniqueConstraints = { @UniqueConstraint(columnNames = { "accountNumber"}) })
 public class EmployeeAccount {
 	
+	public EmployeeAccount() {
+	}
+	
+	public EmployeeAccount(Long id, Long accountNumber, Employee employee) {
+		super();
+		this.id = id;
+		this.accountNumber = accountNumber;
+		this.employee = employee;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(accountNumber, employee, id);
@@ -47,6 +57,7 @@ public class EmployeeAccount {
 	@Column
 	//@Range(max=20,min = 3, message = "{account.number.invalid}")
 	//@NotEmpty(message = "{Pease enter account number.}")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long accountNumber;
 	
 	

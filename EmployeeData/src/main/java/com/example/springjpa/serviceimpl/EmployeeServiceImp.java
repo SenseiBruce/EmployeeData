@@ -2,10 +2,15 @@ package com.example.springjpa.serviceimpl;
 
 import java.util.List;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.example.springjpa.entity.Employee;
+import com.example.springjpa.entity.EmployeeAccount;
+import com.example.springjpa.exceptionhandlers.ResourceAlreadyExistsException;
+import com.example.springjpa.repository.EmployeeAccountRepository;
 import com.example.springjpa.repository.EmployeeRepository;
 import com.example.springjpa.service.EmployeeService;
 
@@ -15,6 +20,8 @@ public class EmployeeServiceImp implements EmployeeService {
 	@Autowired
 	EmployeeRepository employeeRepository ;
 
+	@Autowired
+	EmployeeAccountRepository employeeAccountRepository ;
 	
 	@Override
 	public List<Employee> getByName(String name) {
@@ -53,9 +60,13 @@ public class EmployeeServiceImp implements EmployeeService {
 	}
 
 	@Override
-	public Employee save(String name) {
-		// TODO Auto-generated method stub
-		return employeeRepository.save(new Employee(0, name, null));
+	public Employee save(String name) throws ResourceAlreadyExistsException {
+		Employee  
+		emp =employeeRepository.save(new Employee(0, name, null));
+		
+		employeeAccountRepository.save(new EmployeeAccount(null,(emp.getId()*2) , emp));
+				
+		return emp;
 	}
 	
 	
