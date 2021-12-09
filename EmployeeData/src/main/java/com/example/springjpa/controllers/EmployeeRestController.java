@@ -1,11 +1,12 @@
 package com.example.springjpa.controllers;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-import org.hibernate.exception.ConstraintViolationException;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.tomcat.util.json.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -88,7 +89,23 @@ public class EmployeeRestController {
 	  
 	return emp ;
 	  }
-	 
+
+	  @RequestMapping(value="/employee/{employeeName}/addTo/project/{projectName}", method = RequestMethod.POST)
+	  
+	  public Employee tagEmpoyeetoProject(@PathVariable String employeeName, @PathVariable String projectName) 
+			  throws ResourceAlreadyExistsException, ClientProtocolException, IOException, ParseException, EmployeeNotFoundException {
+		  
+		  Employee employee;
+		if(employeeService.getByName(employeeName).isEmpty()||employeeService.getByName(employeeName).size()==0) {
+				throw new EmployeeNotFoundException("Employee not found");
+				}
+			else {
+			 employee = employeeService.getByName(employeeName).get(0);
+			}
+		  return employeeService.tagEmployeeToProject(employee,projectName);
+		  
+		  
+	  }
 	
 	@RequestMapping(value="/employee/{name}",method = RequestMethod.GET)
 	public List<Employee> getEmplyeeByName(@PathVariable String name ) throws EmployeeNotFoundException{

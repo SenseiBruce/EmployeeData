@@ -17,8 +17,27 @@ import javax.persistence.UniqueConstraint;
 @Table(name="employee",uniqueConstraints = { @UniqueConstraint(columnNames = { "name"}) })
 public class Employee  {
 	
-
+	@Id
+	@Column
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	
+	@Column
+	private String name;
+	
+	@Column(name="projectId")
+	private Long projectid;
+	
+	public Long getProjectid() {
+		return projectid;
+	}
+
+
+	public void setProjectid(Long projectid) {
+		this.projectid = projectid;
+	}
+
+
 	public Long getId() {
 		return id;
 	}
@@ -49,13 +68,6 @@ public class Employee  {
 	}
 
 
-	@Id
-	@Column
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	@Column
-	private String name;
 	
 	
 	@OneToOne( cascade= CascadeType.ALL,orphanRemoval= true,fetch = FetchType.LAZY)

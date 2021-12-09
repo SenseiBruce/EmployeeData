@@ -5,8 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -46,7 +48,7 @@ public class EmployeeRestApiTests {
 	    throws ClientProtocolException, IOException {	   
 	     // Given
 	     String jsonMimeType = "application/json";
-	     HttpUriRequest request = new HttpGet( "http://localhost:8086//Employee" );
+	     HttpUriRequest request = new HttpGet( "http://localhost:8086//employee//Savanna" );
 
 	     // When
 	     CloseableHttpResponse response = HttpClientBuilder.create().build().execute( request );
@@ -61,13 +63,23 @@ public class EmployeeRestApiTests {
 	  @Test
 	  public void testResponseBody() throws ClientProtocolException, IOException {
 		  
-		  HttpUriRequest request = new HttpGet("http://localhost:8086//Employee");
+		  HttpUriRequest request = new HttpGet("http://localhost:8086//employee//Savanna");
 		  
 		  CloseableHttpResponse response = HttpClientBuilder.create().build().execute(request);
 		  
-		  HttpEntity body = response.getEntity();
+		 HttpEntity entity = response.getEntity();
 		  
-		  assertThat(body!=null);
+		 String res = null;
+		 
+		 InputStream instream = entity.getContent();
+
+		 byte[] bytes =  IOUtils.toByteArray(instream);
+
+		 res = new String(bytes, "UTF-8");
+
+		  instream.close();
+		  System.out.println("This is the resonse body. "+res);
+		  assertThat(entity!=null);
 		  
 	  }
 	  }

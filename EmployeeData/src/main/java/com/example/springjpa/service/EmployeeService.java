@@ -1,7 +1,10 @@
 package com.example.springjpa.service;
 
+import java.io.IOException;
 import java.util.List;
 
+import org.apache.http.client.ClientProtocolException;
+import org.apache.tomcat.util.json.ParseException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -31,5 +34,7 @@ public interface EmployeeService {
 	List<Employee> getByProcedureAll();
 
 	Employee save(String name) throws ResourceAlreadyExistsException;
+
+	Employee tagEmployeeToProject(Employee employee, String projectName) throws ClientProtocolException, IOException, ParseException;
 
 }
