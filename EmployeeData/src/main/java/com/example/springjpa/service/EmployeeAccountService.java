@@ -19,4 +19,6 @@ public interface EmployeeAccountService {
 
 	List<EmployeeAccountRepository> getByEmployeeName(String name);
 
+	EmployeeAccount addEmployeeAccount(Employee emp);
+
 }

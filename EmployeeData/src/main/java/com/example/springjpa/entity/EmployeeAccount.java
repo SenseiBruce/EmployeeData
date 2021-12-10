@@ -5,6 +5,7 @@ import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,12 +21,18 @@ public class EmployeeAccount {
 	public EmployeeAccount() {
 	}
 	
+	
+
+
 	public EmployeeAccount(Long id, Long accountNumber, Employee employee) {
 		super();
 		this.id = id;
 		this.accountNumber = accountNumber;
 		this.employee = employee;
 	}
+
+
+
 
 	@Override
 	public int hashCode() {
@@ -45,6 +52,9 @@ public class EmployeeAccount {
 				&& Objects.equals(id, other.id);
 	}
 
+
+
+
 	/*
 	 * @OneToOne(cascade = CascadeType.ALL) private Employee employee;
 	 */
@@ -55,24 +65,12 @@ public class EmployeeAccount {
 	
 
 	@Column
-	//@Range(max=20,min = 3, message = "{account.number.invalid}")
-	//@NotEmpty(message = "{Pease enter account number.}")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long accountNumber;
 	
-	
-	@OneToOne(cascade= CascadeType.ALL	, orphanRemoval= true)
-	Employee employee;
-	
-	
-	public Employee getEmployee() {
-		return employee;
-	}
 
-	public void setEmployee(Employee employee) {
-		this.employee = employee;
-	}
-
+	@OneToOne( cascade= CascadeType.ALL,orphanRemoval= true,fetch = FetchType.LAZY)
+	private Employee employee;
 	
 
 	public Long getId() {

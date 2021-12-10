@@ -28,6 +28,12 @@ public class Employee  {
 	@Column(name="projectId")
 	private Long projectid;
 	
+
+	
+	@OneToOne( cascade= CascadeType.ALL,orphanRemoval= true,fetch = FetchType.LAZY)
+	private EmployeeAccount empoyeeAccount;
+
+	
 	public Long getProjectid() {
 		return projectid;
 	}
@@ -69,10 +75,6 @@ public class Employee  {
 
 
 	
-	
-	@OneToOne( cascade= CascadeType.ALL,orphanRemoval= true,fetch = FetchType.LAZY)
-	private EmployeeAccount empoyeeAccount;
-
 
 	public Employee(long i, String name, EmployeeAccount empoyeeAccount) {
 		super();

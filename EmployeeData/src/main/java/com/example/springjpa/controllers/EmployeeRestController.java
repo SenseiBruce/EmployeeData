@@ -5,16 +5,20 @@ import java.util.List;
 import java.util.Optional;
 
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.conn.HttpHostConnectException;
 import org.apache.tomcat.util.json.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.springjpa.entity.Employee;
+import com.example.springjpa.exceptionhandlers.ConnectionToProjectsModuleRefusedExcetion;
 import com.example.springjpa.exceptionhandlers.EmployeeNotFoundException;
 import com.example.springjpa.exceptionhandlers.ResourceAlreadyExistsException;
+import com.example.springjpa.service.EmployeeAccountService;
 import com.example.springjpa.service.EmployeeService;
 
 //mer conflict demo
@@ -24,6 +28,10 @@ public class EmployeeRestController {
 
 	@Autowired
 	EmployeeService employeeService;
+	
+	@Autowired
+	EmployeeAccountService employeeAccountService;
+	
 	
 	@RequestMapping(value="/hello", method = RequestMethod.GET)
 	public String hello() {
@@ -77,14 +85,16 @@ public class EmployeeRestController {
 	  @RequestMapping(value="/employee/save/{name}/", method = RequestMethod.POST)
 	  
 	  public Employee saveEmpoyee(@PathVariable String name) throws ResourceAlreadyExistsException {
-		  Employee emp;
+		  Employee emp = new Employee();
 	  try {
 		  emp = employeeService.save(name);
+		  //employeeAccountService.addEmployeeAccount(emp);
 	  }
-	  catch(Exception e) {
+	  catch(DataIntegrityViolationException e) {
 		  e.printStackTrace();
 		  throw new ResourceAlreadyExistsException("The resource you are trying to add already exists in the system.");
 	  }
+	
 		  
 	  
 	return emp ;
@@ -93,16 +103,18 @@ public class EmployeeRestController {
 	  @RequestMapping(value="/employee/{employeeName}/addTo/project/{projectName}", method = RequestMethod.POST)
 	  
 	  public Employee tagEmpoyeetoProject(@PathVariable String employeeName, @PathVariable String projectName) 
-			  throws ResourceAlreadyExistsException, ClientProtocolException, IOException, ParseException, EmployeeNotFoundException {
+			  throws ResourceAlreadyExistsException, ClientProtocolException, IOException, ParseException, EmployeeNotFoundException
+			  ,HttpHostConnectException, ConnectionToProjectsModuleRefusedExcetion {
 		  
-		  Employee employee;
-		if(employeeService.getByName(employeeName).isEmpty()||employeeService.getByName(employeeName).size()==0) {
+		  List<Employee> employee =employeeService.getByName(employeeName);
+		if(employee.isEmpty()||employee.size()==0) {
 				throw new EmployeeNotFoundException("Employee not found");
 				}
 			else {
-			 employee = employeeService.getByName(employeeName).get(0);
+			// employee = employeeService.getByName(employeeName);
 			}
-		  return employeeService.tagEmployeeToProject(employee,projectName);
+		return employeeService.tagEmployeeToProject(employee.get(0),projectName);
+		  
 		  
 		  
 	  }

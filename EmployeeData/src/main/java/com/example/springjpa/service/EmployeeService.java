@@ -4,12 +4,12 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.conn.HttpHostConnectException;
 import org.apache.tomcat.util.json.ParseException;
-import org.hibernate.exception.ConstraintViolationException;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.example.springjpa.entity.Employee;
+import com.example.springjpa.exceptionhandlers.ConnectionToProjectsModuleRefusedExcetion;
 import com.example.springjpa.exceptionhandlers.ResourceAlreadyExistsException;
 
 @Service
@@ -35,6 +35,7 @@ public interface EmployeeService {
 
 	Employee save(String name) throws ResourceAlreadyExistsException;
 
-	Employee tagEmployeeToProject(Employee employee, String projectName) throws ClientProtocolException, IOException, ParseException;
+	Employee tagEmployeeToProject(Employee employee, String projectName) throws ClientProtocolException, IOException
+	, ParseException,HttpHostConnectException, ConnectionToProjectsModuleRefusedExcetion;
 
 }
