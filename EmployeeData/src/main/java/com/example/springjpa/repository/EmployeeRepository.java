@@ -27,8 +27,11 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 	
 	 @Query(value="get_all_with_names_starting_with_a",nativeQuery=true)
 	 public List<Employee> getAllEmployeesWithProcedure();
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> branch 'master' of https://github.com/SenseiBruce/EmployeeData.git
 	 
 	/*
 	 * @Procedure public List<Employee> get_all_with_names_starting_with_a();

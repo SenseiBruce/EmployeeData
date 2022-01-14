@@ -8,11 +8,22 @@ import java.util.stream.Stream;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+<<<<<<< HEAD
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.example.springjpa.entity.Employee;
 import com.example.springjpa.repository.EmployeeRepository;
+=======
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import com.example.springjpa.entity.Employee;
+import com.example.springjpa.repository.EmployeeRepository;
+import com.example.springjpa.service.EmployeeService;
+import com.example.springjpa.serviceimpl.EmployeeServiceImp;
+>>>>>>> branch 'master' of https://github.com/SenseiBruce/EmployeeData.git
 
 @RunWith(SpringRunner.class)
 

@@ -29,7 +29,10 @@ public class EmployeeServiceTests {
 		assertEquals(1,employeeService.getAll().size());
 		assertEquals("Kinshuk",employeeService.getAll().get(0).getName());
 		assertNotNull(employeeService.getAll());
+<<<<<<< HEAD
 		assertEquals(true,employeeService.getAll().get(0) instanceof Employee);
+=======
+>>>>>>> branch 'master' of https://github.com/SenseiBruce/EmployeeData.git
 	}
 	
 }

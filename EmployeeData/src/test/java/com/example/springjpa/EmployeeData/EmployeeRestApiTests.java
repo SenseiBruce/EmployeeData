@@ -39,7 +39,11 @@ public class EmployeeRestApiTests {
 	  
 	  CloseableHttpResponse response =  HttpClientBuilder.create().build().execute(request);
 	 
+<<<<<<< HEAD
 	  assertEquals(response.getStatusLine().getStatusCode(),200);
+=======
+	  //assertEquals(response.getStatusLine().getStatusCode(),200);
+>>>>>>> branch 'master' of https://github.com/SenseiBruce/EmployeeData.git
 	  }
 	  
 	  @Test

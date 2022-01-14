@@ -38,6 +38,9 @@ public interface EmployeeService {
 	Employee tagEmployeeToProject(Employee employee, String projectName) throws ClientProtocolException, IOException
 	, ParseException,HttpHostConnectException, ConnectionToProjectsModuleRefusedExcetion;
 
+<<<<<<< HEAD
 	Employee save(Employee employee);
 
+=======
+>>>>>>> branch 'master' of https://github.com/SenseiBruce/EmployeeData.git
 }
