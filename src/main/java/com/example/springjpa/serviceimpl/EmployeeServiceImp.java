@@ -14,6 +14,7 @@ import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.tomcat.util.json.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.example.springjpa.entity.Employee;
@@ -22,9 +23,13 @@ import com.example.springjpa.exceptionhandlers.ConnectionToProjectsModuleRefused
 import com.example.springjpa.exceptionhandlers.ResourceAlreadyExistsException;
 import com.example.springjpa.model.Projects;
 import com.example.springjpa.repository.EmployeeAccountRepository;
+import com.example.springjpa.repository.EmployeeReactiveRepository;
 import com.example.springjpa.repository.EmployeeRepository;
 import com.example.springjpa.service.EmployeeService;
 import com.google.gson.Gson;
+
+import reactor.core.publisher.Flux;
+import reactor.core.scheduler.Scheduler;
 
 @Service
 public class EmployeeServiceImp implements EmployeeService {
@@ -32,9 +37,18 @@ public class EmployeeServiceImp implements EmployeeService {
 	@Autowired
 	EmployeeRepository employeeRepository ;
 	
+	@Autowired
+	EmployeeReactiveRepository employeeReactiveRepository;
+	
 	
 	@Autowired
 	EmployeeAccountRepository employeeAccountRepository ;
+	
+	
+	@Autowired
+	@Qualifier("jdbcScheduler")
+	private Scheduler jdbcScheduler;
+
 	
 	@Override
 	public List<Employee> getByName(String name) {
@@ -85,7 +99,7 @@ public class EmployeeServiceImp implements EmployeeService {
 		
 		EmployeeAccount employeeAccount = employeeAccountRepository.save(new EmployeeAccount(null,(emp.getId()*2) , emp));
 		emp.setEmpoyeeAccount(employeeAccount);
-		employeeRepository.flush();
+		employeeRepository.save(emp);
 		return emp;
 	}
 	
@@ -141,6 +155,13 @@ public class EmployeeServiceImp implements EmployeeService {
 			   
 			  
 		return employeeRepository.save(employee);
+	}
+
+	
+	@Override
+	public Flux<Employee> findAll() {
+		Flux<Employee> defer = Flux.defer(() -> Flux.fromIterable(this.employeeReactiveRepository.findAll()));
+		return defer.subscribeOn(jdbcScheduler);
 	}
 
 	

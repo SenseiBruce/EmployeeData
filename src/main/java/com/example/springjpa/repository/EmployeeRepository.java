@@ -16,6 +16,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 	
 	public List<Employee> findAll();
 
+	
 	public Employee getByName(String name);
 
 	@Query(value="select top (?) * from Employee order by id desc",nativeQuery=true)
@@ -28,6 +29,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 	 @Query(value="get_all_with_names_starting_with_a",nativeQuery=true)
 	 public List<Employee> getAllEmployeesWithProcedure();
 
+	
 
 	 
 	/*

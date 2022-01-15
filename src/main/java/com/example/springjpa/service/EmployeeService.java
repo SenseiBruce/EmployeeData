@@ -12,6 +12,8 @@ import com.example.springjpa.entity.Employee;
 import com.example.springjpa.exceptionhandlers.ConnectionToProjectsModuleRefusedExcetion;
 import com.example.springjpa.exceptionhandlers.ResourceAlreadyExistsException;
 
+import reactor.core.publisher.Flux;
+
 @Service
 public interface EmployeeService {
 
@@ -26,6 +28,8 @@ public interface EmployeeService {
 	List<Employee> getByName(String name);
 
 	List<Employee> getAll();
+	
+	Flux<Employee> findAll();
 	
 	List<Employee> getTopXEmpoyees(int x);
 

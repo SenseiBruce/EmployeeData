@@ -5,6 +5,6 @@
 <!-- <logger name="org.springframeowrk.web" level="TRACE"/> -->
 
 <logger name="org.springframework" level="INFO" />
-<logger name="com.example" level="TRACE" />
+<logger name="com.example" level="INFO" />
 
 </configuration>

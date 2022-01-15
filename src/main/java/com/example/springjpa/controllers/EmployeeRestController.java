@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,8 @@ import com.example.springjpa.service.EmployeeService;
 import com.example.springjpa.serviceimpl.PostMessageToOutboundQueueServiceImpl;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import reactor.core.publisher.Flux;
 
 //mer conflict demo
 @RestController
@@ -68,6 +71,13 @@ public class EmployeeRestController {
 	  
 	  }
 	  
+	  @GetMapping("/reactive/employee")
+		
+		public Flux<Employee> list() {
+			return this.employeeService.findAll();
+		}
+	  
+	 
 	
 	  
 	  @RequestMapping(value="/employee/getAllByProcedure",method = RequestMethod.GET)//,produces = "application/xml
