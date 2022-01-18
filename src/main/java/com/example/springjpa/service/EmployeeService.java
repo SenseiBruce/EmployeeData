@@ -13,6 +13,7 @@ import com.example.springjpa.exceptionhandlers.ConnectionToProjectsModuleRefused
 import com.example.springjpa.exceptionhandlers.ResourceAlreadyExistsException;
 
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
 public interface EmployeeService {
@@ -29,19 +30,32 @@ public interface EmployeeService {
 
 	List<Employee> getAll();
 	
-	Flux<Employee> findAll();
-	
 	List<Employee> getTopXEmpoyees(int x);
 
 	List<Employee> getLastXEmpoyees(int x);
 
 	List<Employee> getByProcedureAll();
-
+	
 	Employee save(String name) throws ResourceAlreadyExistsException;
 
 	Employee tagEmployeeToProject(Employee employee, String projectName) throws ClientProtocolException, IOException
 	, ParseException,HttpHostConnectException, ConnectionToProjectsModuleRefusedExcetion;
 
 	Employee save(Employee employee);
+	
+	
+	//Reactive responses
+	
+	Flux<Employee> getTopXEmpoyeesRx(int top);
+
+	Flux<Employee> getLastXEmpoyeesRx(int last);
+
+	Flux<Employee> findAll();
+
+	Flux<Employee> getByProcedureAllReactively();
+	
+	Flux<Employee> getByNameRx(String name);
+
+	Mono<Employee> saveRx(Employee employee);
 
 }

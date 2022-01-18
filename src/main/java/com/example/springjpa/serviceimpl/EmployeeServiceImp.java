@@ -23,12 +23,12 @@ import com.example.springjpa.exceptionhandlers.ConnectionToProjectsModuleRefused
 import com.example.springjpa.exceptionhandlers.ResourceAlreadyExistsException;
 import com.example.springjpa.model.Projects;
 import com.example.springjpa.repository.EmployeeAccountRepository;
-import com.example.springjpa.repository.EmployeeReactiveRepository;
 import com.example.springjpa.repository.EmployeeRepository;
 import com.example.springjpa.service.EmployeeService;
 import com.google.gson.Gson;
 
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
 @Service
@@ -37,8 +37,6 @@ public class EmployeeServiceImp implements EmployeeService {
 	@Autowired
 	EmployeeRepository employeeRepository ;
 	
-	@Autowired
-	EmployeeReactiveRepository employeeReactiveRepository;
 	
 	
 	@Autowired
@@ -157,12 +155,46 @@ public class EmployeeServiceImp implements EmployeeService {
 		return employeeRepository.save(employee);
 	}
 
-	//
+	//Reactively returning the response
 	@Override
 	public Flux<Employee> findAll() {
-		Flux<Employee> defer = Flux.defer(() -> Flux.fromIterable(this.employeeReactiveRepository.findAll()));
+		Flux<Employee> defer = Flux.defer(() -> Flux.fromIterable(this.employeeRepository.findAll()));
 		return defer.subscribeOn(jdbcScheduler);
 	}
+
+	@Override
+	public Flux<Employee> getByProcedureAllReactively() {
+		Flux<Employee> defer = Flux.defer(()-> Flux.fromIterable(this.employeeRepository.getAllEmployeesWithProcedure()));
+		return defer.subscribeOn(jdbcScheduler);
+	}
+
+	@Override
+	public Flux<Employee> getTopXEmpoyeesRx(int top) {
+		Flux<Employee> defer = Flux.defer(()-> Flux.fromIterable(this.employeeRepository.getTopXEmpoyees(top)));
+		return defer.subscribeOn(jdbcScheduler);
+	}
+
+	@Override
+	public Flux<Employee> getLastXEmpoyeesRx(int last) {
+		Flux<Employee> defer= Flux.defer(()->Flux.fromIterable(this.employeeRepository.getLastXEmpoyees(last)));
+		return defer.subscribeOn(jdbcScheduler);
+	}
+
+	@Override
+	public Mono<Employee> saveRx(Employee employee) {
+		Mono<Employee> just= Mono.just(this.employeeRepository.save(employee));
+		return just.subscribeOn(jdbcScheduler);
+	}
+
+	@Override
+	public Flux<Employee> getByNameRx(String name) {
+		Flux<Employee> just= Flux.just(this.employeeRepository.getByName(name));
+		return just.subscribeOn(jdbcScheduler);
+	}
+
+	
+	
+	
 
 	
 	

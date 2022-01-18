@@ -1,7 +1,6 @@
 package com.example.springjpa.controllers;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +10,7 @@ import org.apache.tomcat.util.json.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +31,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
 //mer conflict demo
 @RestController
@@ -51,14 +53,13 @@ public class EmployeeRestController {
 	EmployeeAccountService employeeAccountService;
 	
 	
-	
-	@RequestMapping(value="/hello", method = RequestMethod.GET)
-	public String hello() {
-		
-
-		return "Hello World.";
-	}
-	
+	/*
+	 * @RequestMapping(value="/hello", method = RequestMethod.GET) public String
+	 * hello() {
+	 * 
+	 * 
+	 * return "Hello World."; }
+	 */
 	@RequestMapping(value="/employee/count",method = RequestMethod.GET)
 	public long getEmployeeCount() {
 		return employeeService.getAll().stream().count();
@@ -71,23 +72,13 @@ public class EmployeeRestController {
 	  
 	  }
 	  
-	  @GetMapping("/reactive/employee")
-		
-		public Flux<Employee> list() {
-			return this.employeeService.findAll();
-		}
-	  
+
 	 
 	
 	  
 	  @RequestMapping(value="/employee/getAllByProcedure",method = RequestMethod.GET)//,produces = "application/xml
 	  public Optional<List<Employee>> getAllEmpoyeesByProcedure() {
-			ArrayList<Employee> list=(ArrayList<Employee>) employeeService.getAll();
-			
-			LOGGER.info("Count of unique employees equals method :"+list.stream().distinct().count());
-			LOGGER.info("Count of unique employees by em,mployee id field with lambda expression :"+list.stream().mapToLong(L->L.getId()).distinct().count());
-			LOGGER.info("Count of unique employees by em,mployee id field with method reerence :"+list.stream().mapToLong(Employee::getId).distinct().count());
-			LOGGER.info("Count of unique employees by em,mployee name field with method reerence :"+list.stream().map(Employee::getName).distinct().count());
+		
 	  return  Optional.ofNullable(employeeService.getByProcedureAll());
 	  
 	  }
@@ -123,6 +114,11 @@ public class EmployeeRestController {
 	  
 	  @Autowired
 	  PostMessageToOutboundQueueServiceImpl producerAsRestEndpoint;
+
+
+	  @Autowired
+	  @Qualifier("jdbcScheduler")
+	  private Scheduler jdbcscheduler;
 	  
 	  @RequestMapping(value="/employee/save/{name}/", method = RequestMethod.POST)
 	  
@@ -191,6 +187,84 @@ public class EmployeeRestController {
 	}
 	
 	
+	//Reactive Endpoints
+	  
+	  @GetMapping(value="/reactive/employee/count")
+		public long getEmployeeCountRx() {
+			return employeeService.findAll().toStream().count();
+		}
 	
+	
+	  @GetMapping(value="/reactive/employee")//,produces = {"application/xml","text/xml"}
+	  public Flux<Employee> getAllEmpoyeesRx() {
+	  
+	  return  employeeService.findAll();
+	  
+	  }
+	  
+	  
+	  @RequestMapping(value="/reactive/employee/getAllByProcedure",method = RequestMethod.GET)//,produces = "application/xml
+	  public Optional<List<Employee>> getAllEmpoyeesByProcedureRx() {
+		
+	  return  Optional.ofNullable(employeeService.getByProcedureAll());
+	  
+	  }
+	
+	  @RequestMapping(value = "/reactive/employee/lastXEmplloyed/{top}",method = RequestMethod.GET)
+	  public Optional<Flux<Employee>> getTopXIdEmployeeRx(@PathVariable int top){
+		// List<Employee> list = employeeService.getAll();	
+		 //list.stream().sorted().skip(top);
+		 return Optional.ofNullable(employeeService.getTopXEmpoyeesRx(top));
+		/*
+		 * return Optional.ofNullable(list.stream()
+		 * .sorted(Comparator.comparingDouble(Employee::getId).reversed()).limit(top));
+		 */
+	  }
+
+	  @RequestMapping(value = "/reactive/employee/firstXEmployed/{last}",method = RequestMethod.GET)
+	  public Optional<Flux<Employee>> getLastXIdEmployeeRx(@PathVariable int last){
+		// List<Employee> list = employeeService.getAll();	
+		 //list.stream().sorted().skip(top);
+		 return Optional.ofNullable(employeeService.getLastXEmpoyeesRx(last));
+			/*
+			 * return Optional.ofNullable(list.stream()
+			 * .sorted(Comparator.comparingDouble(Employee::getId)).limit(last));
+			 */
+	  }
+	
+	  
+	  @RequestMapping(value="/reactive/employee/save/", method = RequestMethod.POST,consumes = "application/json")
+	 	  
+	 	  public Mono<Employee> saveEmpoyeeWhenObjectRecivedRx(@RequestBody Employee employee) 
+	 			  throws ResourceAlreadyExistsException {
+	 		  Employee emp = new Employee();
+	 		  Mono<Employee> mono = Mono.empty();
+	 	  try {
+	 		  LOGGER.info("Starting to save employee.");
+	 		  mono=employeeService.saveRx(employee);
+	 		 
+	 	  }
+	 	  catch(DataIntegrityViolationException e) {
+	 		  e.printStackTrace();
+	 		  throw new ResourceAlreadyExistsException("The resource you are trying to add already exists in the system.");
+	 	  }
+	 	 
+	 	return mono ;
+	 	  }
+	 	  
+
+	 	
+	 	@RequestMapping(value="/reactive/employee/{name}",method = RequestMethod.GET)
+	 	public Flux<Employee> getEmplyeeByNameRx(@PathVariable String name ) throws EmployeeNotFoundException{
+	 		
+	 		if(employeeService.getByName(name).isEmpty()||employeeService.getByName(name).size()==0) {
+	 			throw new EmployeeNotFoundException("Employee not found");
+	 			}
+	 		else {
+	 		return employeeService.getByNameRx(name);
+	 		}
+	 	}
+	 	
 }
 
+	
