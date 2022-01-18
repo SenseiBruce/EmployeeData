@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.example.springjpa.entity.City;
-import com.example.springjpa.repository.CityRepository;
+import com.example.springjpa.repository.CityReactiveRepository;
 import com.example.springjpa.service.CityService;
 
 import reactor.core.publisher.Flux;
@@ -17,7 +17,7 @@ import reactor.core.scheduler.Scheduler;
 class CityServiceImpl implements CityService {
 
 	@Autowired
-	private CityRepository cityRepository;
+	private CityReactiveRepository cityRepository;
 
 	@Autowired
 	private TransactionTemplate transactionTemplate;

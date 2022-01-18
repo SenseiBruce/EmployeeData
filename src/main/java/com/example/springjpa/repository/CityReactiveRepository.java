@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.example.springjpa.entity.City;
 
 @Repository	
-public interface CityRepository extends CrudRepository<City, Long> {
+public interface CityReactiveRepository extends CrudRepository<City, Long> {
 	City findByNameAndCountryAllIgnoringCase(String name, String country);
 }

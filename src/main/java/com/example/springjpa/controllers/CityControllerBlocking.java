@@ -7,14 +7,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.springjpa.entity.City;
-import com.example.springjpa.repository.CityRepository;
+import com.example.springjpa.repository.CityReactiveRepository;
 
 import net.bytebuddy.utility.RandomString;
 
 @Controller
 public class CityControllerBlocking {
 	@Autowired
-	private CityRepository cityRepository;
+	private CityReactiveRepository cityRepository;
 
 	@GetMapping("/one")
 	@ResponseBody

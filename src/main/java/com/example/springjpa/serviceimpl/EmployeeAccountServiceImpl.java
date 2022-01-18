@@ -9,9 +9,10 @@ import com.example.springjpa.entity.Employee;
 import com.example.springjpa.entity.EmployeeAccount;
 import com.example.springjpa.repository.EmployeeAccountRepository;
 import com.example.springjpa.repository.EmployeeRepository;
+import com.example.springjpa.service.EmployeeAccountService;
 
 @Service
-public class EmployeeAccountService implements com.example.springjpa.service.EmployeeAccountService {
+public class EmployeeAccountServiceImpl implements EmployeeAccountService {
 	
 	@Autowired
 	EmployeeRepository employeeRepository;
@@ -19,23 +20,11 @@ public class EmployeeAccountService implements com.example.springjpa.service.Emp
 	@Autowired
 	EmployeeAccountRepository employeeAccountRepository; 
 	
-	@Override
-	public List<EmployeeAccount> getAll() {
-		
-		return employeeAccountRepository.findAll();
-	}
-
-	/*
-	 * @Override public List<EmployeeAccountRepository> getByEmployeeName(String
-	 * employeeName) {
-	 * 
-	 * return employeeAccountRepository.getByEmployeeName(employeeName); }
-	 */
 
 	
 	@Override
 	public List<EmployeeAccountRepository> getByEmployeeName(String name) {
-		// TODO Auto-generated method stub
+	
 		return employeeAccountRepository.getByEmployeeName(name) ;
 	}
 
@@ -43,6 +32,12 @@ public class EmployeeAccountService implements com.example.springjpa.service.Emp
 	public EmployeeAccount addEmployeeAccount(Employee emp) {
 		
 		return employeeAccountRepository.save(new EmployeeAccount(null, emp.getId()*3, emp));
+	}
+
+	@Override
+	public List<EmployeeAccount> getAll() {
+		
+		return employeeAccountRepository.findAll();
 	}
 
 }
