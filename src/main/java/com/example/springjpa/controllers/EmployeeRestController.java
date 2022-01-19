@@ -169,7 +169,26 @@ public class EmployeeRestController {
 			else {
 			// employee = employeeService.getByName(employeeName);
 			}
-		return employeeService.tagEmployeeToProject(employee.get(0),projectName);
+		return employeeService.tagEmployeeToProjectUsingHttpClient(employee.get(0),projectName);
+		  
+		  
+		  
+	  }
+	  
+@RequestMapping(value="/employee/reatemplate/{employeeName}/addTo/project/{projectName}", method = RequestMethod.POST)
+	  
+	  public Employee tagEmpoyeetoProjectUsingRestTemplate(@PathVariable String employeeName, @PathVariable String projectName) 
+			  throws ResourceAlreadyExistsException, ClientProtocolException, IOException, ParseException, EmployeeNotFoundException
+			  ,HttpHostConnectException, ConnectionToProjectsModuleRefusedExcetion {
+		  
+		  List<Employee> employee =employeeService.getByName(employeeName);
+		if(employee.isEmpty()||employee.size()==0) {
+				throw new EmployeeNotFoundException("Employee not found");
+				}
+			else {
+			// employee = employeeService.getByName(employeeName);
+			}
+		return employeeService.tagEmployeeToProjectUsingRestTemplate(employee.get(0),projectName);
 		  
 		  
 		  

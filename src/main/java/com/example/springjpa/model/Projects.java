@@ -1,29 +1,35 @@
 package com.example.springjpa.model;
 
-import java.util.Objects;
-
+import java.util.List;
 
 public class Projects {
 	
-	Long id;
-	
-	String projectName;
-	
-	
-	
-	public Projects(Long id, String projectName) {
-		super();
-		this.id = id;
-		this.projectName = projectName;
-		
+	private List<Project> projects ;
+
+	public List<Project> getProjects() {
+		return projects;
 	}
 
-	public Projects() {
-		
+	public void setProjects(List<Project> projects) {
+		this.projects = projects;
 	}
+
+	public Projects(List<Project> projects) {
+		super();
+		this.projects = projects;
+	}
+
+	@Override
+	public String toString() {
+		return "Projects [projects=" + projects + "]";
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash( id, projectName);
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((projects == null) ? 0 : projects.hashCode());
+		return result;
 	}
 
 	@Override
@@ -35,30 +41,13 @@ public class Projects {
 		if (getClass() != obj.getClass())
 			return false;
 		Projects other = (Projects) obj;
-		return  Objects.equals(id, other.id)
-				&& Objects.equals(projectName, other.projectName);
+		if (projects == null) {
+			if (other.projects != null)
+				return false;
+		} else if (!projects.equals(other.projects))
+			return false;
+		return true;
 	}
-
-	
-	
-	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getProjectName() {
-		return projectName;
-	}
-
-	public void setProjectName(String projectName) {
-		this.projectName = projectName;
-	}
-
 	
 
-	
 }

@@ -13,15 +13,18 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.tomcat.util.json.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.example.springjpa.entity.Employee;
 import com.example.springjpa.entity.EmployeeAccount;
 import com.example.springjpa.exceptionhandlers.ConnectionToProjectsModuleRefusedExcetion;
 import com.example.springjpa.exceptionhandlers.ResourceAlreadyExistsException;
-import com.example.springjpa.model.Projects;
+import com.example.springjpa.model.Project;
 import com.example.springjpa.repository.EmployeeAccountRepository;
 import com.example.springjpa.repository.EmployeeRepository;
 import com.example.springjpa.service.EmployeeService;
@@ -33,11 +36,14 @@ import reactor.core.scheduler.Scheduler;
 
 @Service
 public class EmployeeServiceImp implements EmployeeService {
-
+	
+	private static final Logger LOGGER=LoggerFactory.getLogger(EmployeeServiceImp.class);
+	
 	@Autowired
 	EmployeeRepository employeeRepository ;
 	
-	
+	@Autowired
+	RestTemplate restTemplate;
 	
 	@Autowired
 	EmployeeAccountRepository employeeAccountRepository ;
@@ -108,7 +114,7 @@ public class EmployeeServiceImp implements EmployeeService {
 	}
 
 	@Override
-	public Employee tagEmployeeToProject(Employee employee, String projectName) 
+	public Employee tagEmployeeToProjectUsingHttpClient(Employee employee, String projectName) 
 			throws ClientProtocolException, IOException, ParseException, HttpHostConnectException, ConnectionToProjectsModuleRefusedExcetion {
 		
 			  
@@ -134,7 +140,7 @@ public class EmployeeServiceImp implements EmployeeService {
 				  
 				  instream.close(); 
 				  
-				  Projects apiResponse =  new Gson().fromJson( responseString , Projects.class);
+				  Project apiResponse =  new Gson().fromJson( responseString , Project.class);
 						      
 				  projectId = apiResponse.getId();
 				  
@@ -152,6 +158,20 @@ public class EmployeeServiceImp implements EmployeeService {
 			  employee.setProjectid(projectId);
 			   
 			  
+		return employeeRepository.save(employee);
+	}
+
+	
+	@Override
+	public Employee tagEmployeeToProjectUsingRestTemplate(Employee employee, String projectName) {
+		//Getting the project id from Project web service.
+		Project[] project = restTemplate.getForObject(
+				"http://localhost:8087//project//"+projectName, Project[].class);
+		
+		Long projectId=project[0].getId();
+		employee.setProjectid(projectId);
+		LOGGER.info(project.toString());
+		LOGGER.info(project[0].getId().toString());
 		return employeeRepository.save(employee);
 	}
 

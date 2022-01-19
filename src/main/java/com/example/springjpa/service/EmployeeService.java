@@ -38,9 +38,6 @@ public interface EmployeeService {
 	
 	Employee save(String name) throws ResourceAlreadyExistsException;
 
-	Employee tagEmployeeToProject(Employee employee, String projectName) throws ClientProtocolException, IOException
-	, ParseException,HttpHostConnectException, ConnectionToProjectsModuleRefusedExcetion;
-
 	Employee save(Employee employee);
 	
 	
@@ -57,5 +54,10 @@ public interface EmployeeService {
 	Flux<Employee> getByNameRx(String name);
 
 	Mono<Employee> saveRx(Employee employee);
+
+	Employee tagEmployeeToProjectUsingRestTemplate(Employee employee, String projectName);
+
+	Employee tagEmployeeToProjectUsingHttpClient(Employee employee, String projectName) throws ClientProtocolException,
+			IOException, ParseException, HttpHostConnectException, ConnectionToProjectsModuleRefusedExcetion;
 
 }
