@@ -237,7 +237,7 @@ public class EmployeeRestController {
 	 	  
 	 	  public Mono<Employee> saveEmpoyeeWhenObjectRecivedRx(@RequestBody Employee employee) 
 	 			  throws ResourceAlreadyExistsException {
-	 		  Employee emp = new Employee();
+	 		 
 	 		  Mono<Employee> mono = Mono.empty();
 	 	  try {
 	 		  LOGGER.info("Starting to save employee.");
