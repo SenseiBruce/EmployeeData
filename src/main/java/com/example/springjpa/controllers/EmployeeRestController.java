@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.MediaType;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -138,7 +139,7 @@ public class EmployeeRestController {
 	return emp ;
 	  }
 	  
- @RequestMapping(value="/employee/save/", method = RequestMethod.POST,consumes = "application/json")
+ @RequestMapping(value="/employee/save/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	  
 	  public Employee saveEmpoyeeWhenObjectRecived(@RequestBody Employee employee) throws ResourceAlreadyExistsException {
 		  Employee emp = new Employee();
