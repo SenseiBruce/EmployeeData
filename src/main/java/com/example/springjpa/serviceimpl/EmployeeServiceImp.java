@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.example.springjpa.entity.Employee;
 import com.example.springjpa.entity.EmployeeAccount;
@@ -166,16 +167,17 @@ public class EmployeeServiceImp implements EmployeeService {
 	public Employee tagEmployeeToProjectUsingRestTemplate(Employee employee, String projectName) {
 		//Getting the project id from Project web service.
 		Project[] project = restTemplate.getForObject(
-				"http://localhost:8087//project//"+projectName, Project[].class);
+				"http://localhost:8087//reactive//project//"+projectName, Project[].class);
 		
 		Long projectId=project[0].getId();
 		employee.setProjectid(projectId);
-		LOGGER.info(project.toString());
+		for(Project p : project)
+		LOGGER.info(p.toString());
 		LOGGER.info(project[0].getId().toString());
 		return employeeRepository.save(employee);
 	}
 
-	//Reactively returning the response
+	//Reactively returning the response// start
 	@Override
 	public Flux<Employee> findAll() {
 		Flux<Employee> defer = Flux.defer(() -> Flux.fromIterable(this.employeeRepository.findAll()));
@@ -215,9 +217,29 @@ public class EmployeeServiceImp implements EmployeeService {
 	
 	
 	
+	
+	//Reactively returning the response// end
+	
+	@Autowired
+	WebClient webClient;
+	
+	@Override
+	public Employee tagEmployeeToProjectUsingWebClient(Employee employee, String projectName) {
 
+		//Getting the project id from Project web service.
+		Flux<Project> project = webClient.get().uri("/reactive/project/"+projectName).retrieve().bodyToFlux
+				(Project.class);
+		
+		Mono<Project> mono=project.next();
+		Long projectId=mono.block().getId();
+		employee.setProjectid(projectId);
+		
+		LOGGER.info(mono.block().toString());
+		LOGGER.info(projectId.toString());
+		return employeeRepository.save(employee);
 	
-	
+	}
+
 	
 	
 }

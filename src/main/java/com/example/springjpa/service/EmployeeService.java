@@ -60,4 +60,6 @@ public interface EmployeeService {
 	Employee tagEmployeeToProjectUsingHttpClient(Employee employee, String projectName) throws ClientProtocolException,
 			IOException, ParseException, HttpHostConnectException, ConnectionToProjectsModuleRefusedExcetion;
 
+	Employee tagEmployeeToProjectUsingWebClient(Employee employee, String projectName);
+
 }

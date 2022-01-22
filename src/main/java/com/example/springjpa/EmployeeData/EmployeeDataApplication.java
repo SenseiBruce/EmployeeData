@@ -15,6 +15,7 @@ import org.springframework.jms.annotation.EnableJms;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -51,5 +52,10 @@ public class EmployeeDataApplication {
 		return builder.build();
 	}
 	
+	@Bean
+	public WebClient webClient() {
+
+		return WebClient.create("http://localhost:8087");
+	}
 	
 }

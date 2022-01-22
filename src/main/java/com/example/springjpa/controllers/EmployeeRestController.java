@@ -166,16 +166,14 @@ public class EmployeeRestController {
 		if(employee.isEmpty()||employee.size()==0) {
 				throw new EmployeeNotFoundException("Employee not found");
 				}
-			else {
-			// employee = employeeService.getByName(employeeName);
-			}
+			
 		return employeeService.tagEmployeeToProjectUsingHttpClient(employee.get(0),projectName);
 		  
 		  
 		  
 	  }
 	  
-@RequestMapping(value="/employee/reatemplate/{employeeName}/addTo/project/{projectName}", method = RequestMethod.POST)
+@RequestMapping(value="/employee/resatemplate/{employeeName}/addTo/project/{projectName}", method = RequestMethod.POST)
 	  
 	  public Employee tagEmpoyeetoProjectUsingRestTemplate(@PathVariable String employeeName, @PathVariable String projectName) 
 			  throws ResourceAlreadyExistsException, ClientProtocolException, IOException, ParseException, EmployeeNotFoundException
@@ -193,6 +191,25 @@ public class EmployeeRestController {
 		  
 		  
 	  }
+@RequestMapping(value="/employee/webClient/{employeeName}/addTo/project/{projectName}", method = RequestMethod.POST)
+
+public Employee tagEmpoyeetoProjectUsingWebClient(@PathVariable String employeeName, @PathVariable String projectName) 
+		  throws ResourceAlreadyExistsException, ClientProtocolException, IOException, ParseException, EmployeeNotFoundException
+		  ,HttpHostConnectException, ConnectionToProjectsModuleRefusedExcetion {
+	  
+	  List<Employee> employee =employeeService.getByName(employeeName);
+	if(employee.isEmpty()||employee.size()==0) {
+			throw new EmployeeNotFoundException("Employee not found");
+			}
+		else {
+		// employee = employeeService.getByName(employeeName);
+		}
+	return employeeService.tagEmployeeToProjectUsingWebClient(employee.get(0),projectName);
+	  
+	  
+	  
+}
+
 	
 	@RequestMapping(value="/employee/{name}",method = RequestMethod.GET)
 	public List<Employee> getEmplyeeByName(@PathVariable String name ) throws EmployeeNotFoundException{
